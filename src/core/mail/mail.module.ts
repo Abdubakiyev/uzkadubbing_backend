@@ -7,11 +7,11 @@ import { MailService } from './mail.service';
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT),
+        host: 'smtp.sendgrid.net',
+        port: 578,
         secure: false, // TLS uchun true qilasan agar 465 port ishlatilsa
         auth: {
-          user: process.env.SMTP_USER,
+          user: "apikey",
           pass: process.env.SMTP_PASS,
         },
       },
