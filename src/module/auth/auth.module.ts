@@ -4,7 +4,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { PrismaModule } from 'src/core/prisma/prisma.module';
 import { JwtStrategy } from 'src/core/jwt/JwtStrategy';
-import { MailModule } from 'src/core/mail/mail.module';
 import { AuthController } from './auth.controller';
 
 @Module({
@@ -14,7 +13,6 @@ import { AuthController } from './auth.controller';
     JwtModule.register({
       secret: process.env.JWT_ACCESS_SECRET,
     }),
-    MailModule
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
