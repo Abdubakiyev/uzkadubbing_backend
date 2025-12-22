@@ -9,7 +9,7 @@ import { MailService } from './mail.service';
       transport: {
         host: process.env.SMTP_HOST,
         port: Number(process.env.SMTP_PORT),
-        secure: false, // TLS uchun true qilasan agar 465 port ishlatilsa
+        secure: true, // TLS uchun true qilasan agar 465 port ishlatilsa
         auth: {
           user: process.env.SMTP_USER,
           pass: process.env.SMTP_PASS,
