@@ -10,7 +10,7 @@ async function bootstrap() {
 
   // ✅ Frontend portini ruxsat berish (CORS)
   app.enableCors({
-    origin: 'http://localhost:3001', // frontend port
+    origin: 'https://uzkadubbing.vercel.app', // frontend port
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true, // agar cookie yoki auth kerak bo'lsa
   });
