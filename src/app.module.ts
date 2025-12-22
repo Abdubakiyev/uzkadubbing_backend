@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from './core/prisma/prisma.module';
 
-import { MailModule } from './core/mail/mail.module';
 import { UserModule } from './module/user/user.module';
 import { AuthModule } from './module/auth/auth.module';
 import { SubscriptionPlanModule } from './module/subscription-plan/subscription-plan.module';
@@ -15,7 +14,6 @@ import { AppController } from './app.controller';
 @Module({
   imports: [
     PrismaModule,
-    MailModule,
     UserModule,
     AuthModule,
     SubscriptionPlanModule,
