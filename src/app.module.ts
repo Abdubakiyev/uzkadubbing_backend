@@ -10,6 +10,7 @@ import { EpisodeModule } from './module/episode/episode.module';
 import { CommentModule } from './module/comment/comment.module';
 import { UserSubscriptionModule } from './module/user-subscription/user-subscription.module';
 import { AdvertisementModule } from './module/advertisement/advertisement.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -24,5 +25,6 @@ import { AdvertisementModule } from './module/advertisement/advertisement.module
     UserSubscriptionModule,
     AdvertisementModule
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
