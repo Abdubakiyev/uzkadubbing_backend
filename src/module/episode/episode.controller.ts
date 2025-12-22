@@ -53,7 +53,7 @@ import {
       }),
     }))
     uploadVideo(@UploadedFile() file: Express.Multer.File) {
-      return { url: `http://localhost:3000/uploads/episodes/${file.filename}` };
+      return { url: `https://uzkadubbing.onrender.com/uploads/episodes/${file.filename}` };
     }
   
     // 🔹 GET ALL – filter bo‘lishi mumkin (animeId orqali)

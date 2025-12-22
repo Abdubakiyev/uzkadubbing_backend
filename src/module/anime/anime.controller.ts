@@ -61,7 +61,7 @@ export class AnimeController {
       throw new BadRequestException('File is required');
     }
 
-    const url = `http://localhost:3000/uploads/anime-images/${file.filename}`;
+    const url = `https://uzkadubbing.onrender.com/uploads/anime-images/${file.filename}`;
     return { url };
   }
 

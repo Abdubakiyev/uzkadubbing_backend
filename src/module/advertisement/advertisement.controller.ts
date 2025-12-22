@@ -108,7 +108,7 @@ import {
         throw new BadRequestException('File is required');
       }
   
-      const url = `http://localhost:3000/uploads/ads-videos/${file.filename}`;
+      const url = `https://uzkadubbing.onrender.com/uploads/ads-videos/${file.filename}`;
       return { url };
     }
   }
