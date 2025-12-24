@@ -1,7 +1,14 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateAdvertisementDto {
+  @ApiProperty({
+    description: 'Reklama qaysi episodega tegishli ekanligi',
+    example: 'b3a8f6b1-9d2e-4d5f-9f8a-8b8f6c1c2d34',
+  })
+  @IsUUID()
+  episodeId: string;
+
   @ApiPropertyOptional({
     description: 'Reklama videosi URL yoki file path',
     example: 'http://localhost:3000/uploads/ads-videos/video.mp4',

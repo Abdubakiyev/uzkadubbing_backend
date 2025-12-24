@@ -8,15 +8,32 @@ export class AdvertisementService {
   constructor(private readonly prisma: PrismaService) {}
 
   // =================== CREATE ===================
-  create(dto: CreateAdvertisementDto) {
+  async create(dto: CreateAdvertisementDto) {
+    // Episode mavjudligini tekshiramiz
+    const episode = await this.prisma.episode.findUnique({
+      where: { id: dto.episodeId },
+    });
+
+    if (!episode) {
+      throw new NotFoundException('Episode not found');
+    }
+
     return this.prisma.advertisement.create({
-      data: dto,
+      data: {
+        video: dto.video,
+        text: dto.text,
+        link: dto.link,
+        episodeId: dto.episodeId,
+      },
     });
   }
 
   // =================== GET ALL ===================
   findAll() {
     return this.prisma.advertisement.findMany({
+      include: {
+        episode: true,
+      },
       orderBy: {
         createdAt: 'desc',
       },
@@ -27,17 +44,32 @@ export class AdvertisementService {
   async findOne(id: string) {
     const ad = await this.prisma.advertisement.findUnique({
       where: { id },
+      include: {
+        episode: true,
+      },
     });
 
     if (!ad) {
       throw new NotFoundException('Advertisement not found');
     }
+
     return ad;
   }
 
   // =================== UPDATE ===================
   async update(id: string, dto: UpdateAdvertisementDto) {
-    await this.findOne(id); // mavjudligini tekshirish
+    await this.findOne(id);
+
+    // agar episodeId o‘zgartirilsa — tekshiramiz
+    if (dto.episodeId) {
+      const episode = await this.prisma.episode.findUnique({
+        where: { id: dto.episodeId },
+      });
+
+      if (!episode) {
+        throw new NotFoundException('Episode not found');
+      }
+    }
 
     return this.prisma.advertisement.update({
       where: { id },
@@ -47,26 +79,54 @@ export class AdvertisementService {
 
   // =================== DELETE ===================
   async remove(id: string) {
-    await this.findOne(id); // mavjudligini tekshirish
+    await this.findOne(id);
 
     return this.prisma.advertisement.delete({
       where: { id },
     });
   }
 
-  // =================== UPLOAD VIDEO URL INTEGRATION ===================
-  // Agar video upload qilinsa va URL qabul qilinsa, reklama yaratish
-  async createWithVideo(url: string, dto?: CreateAdvertisementDto) {
-    const data = { ...dto, video: url };
-    return this.prisma.advertisement.create({ data });
+  // =================== CREATE WITH VIDEO ===================
+  async createWithVideo(
+    episodeId: string,
+    videoUrl: string,
+    dto?: CreateAdvertisementDto,
+  ) {
+    const episode = await this.prisma.episode.findUnique({
+      where: { id: episodeId },
+    });
+
+    if (!episode) {
+      throw new NotFoundException('Episode not found');
+    }
+
+    return this.prisma.advertisement.create({
+      data: {
+        video: videoUrl,
+        text: dto?.text,
+        link: dto?.link,
+        episodeId,
+      },
+    });
   }
 
-  // Agar video upload qilingan va mavjud reklama update qilinishi kerak bo‘lsa
-  async updateVideo(id: string, url: string) {
+  // =================== UPDATE VIDEO ===================
+  async updateVideo(id: string, videoUrl: string) {
     await this.findOne(id);
+
     return this.prisma.advertisement.update({
       where: { id },
-      data: { video: url },
+      data: {
+        video: videoUrl,
+      },
+    });
+  }
+
+  // =================== GET ADS BY EPISODE ===================
+  async findByEpisode(episodeId: string) {
+    return this.prisma.advertisement.findMany({
+      where: { episodeId },
+      orderBy: { createdAt: 'asc' },
     });
   }
 }
