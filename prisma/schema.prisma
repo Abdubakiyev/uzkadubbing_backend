@@ -81,6 +81,7 @@ model Episode {
   animeId   String
   title     String
   videoUrl  String
+  advertisements Advertisement[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -127,10 +128,15 @@ model EmailVerification {
 
 model Advertisement {
   id        String   @id @default(uuid())
-  video     String?  // video fayl URL yoki path
+
+  video     String?  // video reklama URL/path
   text      String?  // reklama matni
-  link      String?  // tashqi havola (button bosilganda)
-  
+  link      String?  // tashqi havola
+
+  episodeId String
+  episode   Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
