@@ -83,6 +83,7 @@ export class AdvertisementService {
 
     return this.prisma.advertisement.delete({
       where: { id },
+      include: { episode: true }
     });
   }
 
@@ -107,6 +108,7 @@ export class AdvertisementService {
         link: dto?.link,
         episodeId,
       },
+      include: { episode: true },
     });
   }
 
@@ -119,6 +121,7 @@ export class AdvertisementService {
       data: {
         video: videoUrl,
       },
+      include: { episode: true }
     });
   }
 
@@ -127,6 +130,7 @@ export class AdvertisementService {
     return this.prisma.advertisement.findMany({
       where: { episodeId },
       orderBy: { createdAt: 'asc' },
+      include: { episode: true }
     });
   }
 }
