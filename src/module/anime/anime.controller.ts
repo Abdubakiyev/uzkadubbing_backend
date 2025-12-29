@@ -1,6 +1,7 @@
 import { 
   Controller, Get, Post, Body, Param, Patch, Delete, 
-  UseGuards, UploadedFile, UseInterceptors, BadRequestException 
+  UseGuards, UploadedFile, UseInterceptors, BadRequestException, 
+  InternalServerErrorException
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -110,7 +111,12 @@ export class AnimeController {
   @ApiOperation({ summary: 'Delete an anime (Admin only)' })
   @ApiResponse({ status: 200, description: 'Anime deleted successfully' })
   @ApiResponse({ status: 404, description: 'Anime not found' })
-  remove(@Param('id') id: string) {
-    return this.service.remove(id);
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.service.remove(id);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerErrorException('Anime o‘chirishda xatolik yuz berdi');
+    }
   }
 }
