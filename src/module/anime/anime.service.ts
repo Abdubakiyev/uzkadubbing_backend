@@ -107,15 +107,24 @@ export class AnimeService {
 
   // ---------------- REMOVE ----------------
   async remove(id: string) {
-    // Anime bor-yo'qligini tekshirish
-    const exists = await this.prisma.anime.findUnique({ where: { id } });
-    if (!exists) throw new NotFoundException('Anime topilmadi');
+    const exists = await this.prisma.anime.findUnique({
+      where: { id },
+    });
   
-    // Bog'liq yozuvlarni o'chirish
-    await this.prisma.episode.deleteMany({ where: { animeId: id } });
+    if (!exists) {
+      throw new NotFoundException('Anime topilmadi');
+    }
   
-    // Asosiy anime-ni o'chirish
-    return this.prisma.anime.delete({ where: { id } });
-  }
+    return this.prisma.$transaction(async (tx) => {
+      // Episodlarni o‘chirish
+      await tx.episode.deleteMany({
+        where: { animeId: id },
+      });
   
+      // Anime-ni o‘chirish
+      return tx.anime.delete({
+        where: { id },
+      });
+    });
+  }  
 }
