@@ -116,15 +116,29 @@ export class AnimeService {
     }
   
     return this.prisma.$transaction(async (tx) => {
-      // Episodlarni o‘chirish
+      // Animega tegishli episode-larni olish
+      const episodes = await tx.episode.findMany({
+        where: { animeId: id },
+        select: { id: true },
+      });
+  
+      const episodeIds = episodes.map(e => e.id);
+  
+      // Commentslarni o'chirish (episodeId orqali)
+      await tx.comment.deleteMany({
+        where: { animeId: id },
+      });
+  
+      // Episode-larni o'chirish
       await tx.episode.deleteMany({
         where: { animeId: id },
       });
   
-      // Anime-ni o‘chirish
+      // Anime-ni o'chirish
       return tx.anime.delete({
         where: { id },
       });
     });
-  }  
+  }
+   
 }
