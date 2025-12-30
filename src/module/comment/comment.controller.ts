@@ -1,12 +1,12 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, Req, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Param, Patch, Delete, Req, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { JwtAuthGuard } from 'src/core/Guard/JwtGuard';
 
-@ApiTags('Comments')          // Swagger panelida guruh nomi
-@ApiBearerAuth('JWT-auth')    // JWT Authorization
+@ApiTags('Comments')          
+@ApiBearerAuth('JWT-auth')    
 @Controller('comments')
 export class CommentController {
   constructor(private readonly service: CommentService) {}
@@ -20,13 +20,17 @@ export class CommentController {
     return this.service.create(req.user.id, dto);
   }
 
-  // 🔹 FIND ALL BY ANIME
+  // 🔹 FIND ALL BY ANIME (optional episodeId)
   @UseGuards(JwtAuthGuard)
   @Get('anime/:animeId')
-  @ApiOperation({ summary: 'Get all comments for an anime' })
+  @ApiOperation({ summary: 'Get all comments for an anime (optional episode filter)' })
+  @ApiQuery({ name: 'episodeId', required: false, type: String })
   @ApiResponse({ status: 200, description: 'List of comments' })
-  findAll(@Param('animeId') animeId: string) {
-    return this.service.findAll(animeId);
+  findAll(
+    @Param('animeId') animeId: string,
+    @Query('episodeId') episodeId?: string
+  ) {
+    return this.service.findAll(animeId, episodeId);
   }
 
   // 🔹 FIND ONE
