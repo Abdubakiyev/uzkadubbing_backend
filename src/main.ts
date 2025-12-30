@@ -10,7 +10,7 @@ async function bootstrap() {
 
   // ✅ Frontend portini ruxsat berish (CORS)
   app.enableCors({
-    origin: 'https://uzkadubbing.vercel.app', // frontend port
+    origin: 'https://uzkadubbing.vercel.app', // frontend URL
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true, // agar cookie yoki auth kerak bo'lsa
   });
@@ -30,12 +30,17 @@ async function bootstrap() {
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
   // Validation
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    transform: true,
-  }));
-  
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    }),
+  );
 
-  await app.listen(3000);
+  // ✅ Render-da portni ishlatish
+  const PORT = process.env.PORT || 3000;
+  await app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 }
 bootstrap();
