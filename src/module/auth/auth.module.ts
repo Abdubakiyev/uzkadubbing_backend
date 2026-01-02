@@ -11,7 +11,7 @@ import { AuthController } from './auth.controller';
     PrismaModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.JWT_ACCESS_SECRET,
+      secret: "supersecretaccesskey",
     }),
   ],
   controllers: [AuthController],
