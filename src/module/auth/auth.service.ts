@@ -60,12 +60,11 @@ export class AuthService {
     const payload = { sub: userId, role };
 
     const accessToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_ACCESS_SECRET,
+      secret: "supersecretaccesskey",
     });
 
     const refreshToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_REFRESH_SECRET,
-      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN as any,
+      secret: "supersecretrefreshkey",
     });
 
     return { accessToken, refreshToken };
