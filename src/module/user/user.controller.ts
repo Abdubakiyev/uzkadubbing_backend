@@ -95,7 +95,7 @@ export class UserController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const avatarUrl = `https://uzkadubbing.onrender.com/uploads/avatars/${file.filename}`;
+    const avatarUrl = `https://uzkadubbingbackend-uzka.up.railway.app/uploads/avatars/${file.filename}`;
     return this.userService.updateAvatar(id, avatarUrl);
   }
 }
