@@ -105,7 +105,7 @@ export class AdvertisementController {
       throw new BadRequestException('File is required');
     }
 
-    const url = `https://uzkadubbing.onrender.com/uploads/ads-videos/${file.filename}`;
+    const url = `https://uzkadubbingbackend-uzka.up.railway.app/uploads/ads-videos/${file.filename}`;
     return { url };
   }
 }
